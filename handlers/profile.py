@@ -1,3 +1,4 @@
+from config.settings import ADMIN_USER_ID, YOOMONEY_RECEIVER
 from aiogram import F, Router
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import CallbackQuery, InputMediaPhoto
@@ -245,7 +246,7 @@ async def top_up_summ(callback: CallbackQuery):
     summa = int(callback.data.split('_')[1])
     label = f"{summa}/{callback.from_user.id}/{datetime.datetime.now()}"
     pay_form = Quickpay(
-        receiver="REMOVED_PRIVATE_VALUE",
+        receiver=YOOMONEY_RECEIVER,
         quickpay_form="shop",
         targets="Sponsor this project",
         paymentType="SB",
@@ -285,7 +286,7 @@ async def check_top_up(callback: CallbackQuery):
                                            f"💰 Баланс: {balance} RUB",
                                       show_alert=True)
             await profile(callback)
-            await bot.send_message(chat_id=REMOVED_PRIVATE_VALUE,
+            await bot.send_message(chat_id=ADMIN_USER_ID,
                                    text=f'💸 Пользователь @{callback.from_user.username} пополнил счет на {summa} RUB',
                                    reply_markup=markups.close_mes)
             break

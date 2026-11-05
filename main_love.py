@@ -1,3 +1,4 @@
+from config.settings import ADMIN_USER_ID, OWNER_USER_ID
 import logging
 import asyncio
 
@@ -624,7 +625,7 @@ async def forms(message: Message):
             text_form = form_for_you[2]
             type1 = db.get_type1(user_id)
             media1 = db.get_media1(user_id)
-            if user_id == REMOVED_PRIVATE_VALUE:
+            if user_id == ADMIN_USER_ID:
                 if type1 == 1:
                     await bot.send_photo(message.chat.id,
                                          photo=media1,
@@ -1849,7 +1850,7 @@ async def main_menu(message: Message, state: FSMContext):
 
 @dp.message(Command('admin'))
 async def admin_panel(message: Message):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer('👑 Добро пожаловать, дорогой админ', reply_markup=markups.admin_panel_love)
     else:
         await message.answer('<b>❣️ Такая команда доступна только админу</b>')
@@ -1857,14 +1858,14 @@ async def admin_panel(message: Message):
 
 @dp.message(F.text == '🔝 В Админ панель')
 async def back_adm(message: Message, state: FSMContext):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer('👑 Добро пожаловать, дорогой админ', reply_markup=markups.admin_panel_love)
         await state.clear()
 
 
 @dp.message(F.text == '📊 Статистика')
 async def statistics(message: Message):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         count_user = list(db.get_all_users_love())
         stats = ('📊 <b>АКТУАЛЬНАЯ СТАТИСТИКА</b>\n\n'
                  f'<code>ПОЛЬЗОВАТЕЛЕЙ В БОТЕ:</code> <b>{len(count_user)}</b>\n'
@@ -1883,7 +1884,7 @@ class Spam_all(StatesGroup):
 
 @dp.message(F.text == '👥 Рассылка')
 async def send_all(message: types.Message, state: FSMContext):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer('Введите текст текс для рассылки:', reply_markup=markups.back_admin)
         await state.set_state(Spam_all.spam_all)
     else:

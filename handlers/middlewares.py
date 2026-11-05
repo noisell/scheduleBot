@@ -1,3 +1,4 @@
+from config.settings import ADMIN_USER_ID, OWNER_USER_ID
 import datetime
 import logging
 
@@ -52,9 +53,9 @@ class AntiSpamBot_Message(BaseMiddleware):
         if check_ban == 'BAN':
             await bot.send_message(event.from_user.id,
                                    '🚫 <b>ВЫ ЗАБЛОКИРОВАНЫ ЗА СПАМ!</b>\n\nБлокировка будет снята через час')
-            await bot.send_message(REMOVED_PRIVATE_VALUE,
+            await bot.send_message(ADMIN_USER_ID,
                                    f'<b>Заблокировал пользователя за спам!\nЕго id: {event.from_user.id}\nЕго username: {event.from_user.username}</b>')
-            await bot.send_message(REMOVED_PRIVATE_VALUE,
+            await bot.send_message(OWNER_USER_ID,
                                    f'<b>Заблокировал пользователя за спам!\nЕго id: {event.from_user.id}\nЕго username: {event.from_user.username}</b>')
             return
         elif check_ban == 'NICE':
@@ -82,9 +83,9 @@ class AntiSpamBot_Callback(BaseMiddleware):
             await event.answer(
                 text='🚫 ВЫ ЗАБЛОКИРОВАНЫ ЗА СПАМ!\n\nБлокировка будет снята через час',
                 show_alert=True)
-            await bot.send_message(REMOVED_PRIVATE_VALUE,
+            await bot.send_message(ADMIN_USER_ID,
                                    f'<b>Заблокировал пользователя за спам!\nЕго id: {event.from_user.id}\nЕго username: {event.from_user.username}</b>')
-            await bot.send_message(REMOVED_PRIVATE_VALUE,
+            await bot.send_message(OWNER_USER_ID,
                                    f'<b>Заблокировал пользователя за спам!\nЕго id: {event.from_user.id}\nЕго username: {event.from_user.username}</b>')
             return
         elif check_ban == 'NICE':

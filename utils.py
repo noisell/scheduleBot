@@ -1,3 +1,4 @@
+from config.settings import ADMIN_USER_ID
 import logging
 from urllib.parse import urlencode
 from schedule import campus_1, campus_2, is_upper_week, parsing_changes, first_course, second_course, third_course, fourth_course, fc2, sc2, tc2, add_db_changes, create_schedule
@@ -151,7 +152,7 @@ def state_group():
 
 async def send_message(text=None, admin=None):
     if admin == 0:
-        await bot.send_message(REMOVED_PRIVATE_VALUE, text)
+        await bot.send_message(ADMIN_USER_ID, text)
     if admin == 1:
         not_active = 0
         users_len = 0
@@ -204,7 +205,7 @@ async def send_message(text=None, admin=None):
             except Exception as e:
                 print(e)
                 not_active += 1
-        await bot.send_message(REMOVED_PRIVATE_VALUE,
+        await bot.send_message(ADMIN_USER_ID,
                                f'<b>👨‍💻 Доставлены уведомления об изменениях 1 корпуса! \n\nОтправлено сообщений: {users_len} \nАктивных пользователей: {active} \nПользователей заблокировавших бота: {not_active}</b>',
                                reply_markup=markups.close_mes)
 
@@ -259,7 +260,7 @@ async def send_message(text=None, admin=None):
             except Exception as e:
                 print(e)
                 not_active += 1
-        await bot.send_message(REMOVED_PRIVATE_VALUE,
+        await bot.send_message(ADMIN_USER_ID,
                                f'<b>👨‍💻 Доставлены уведомления об изменениях 2 корпуса! \n\nОтправлено сообщений: {active_gr} \nАктивных пользователей: {active} \nПользователей заблокировавших бота: {not_active}</b>',
                                reply_markup=markups.close_mes)
 

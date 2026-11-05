@@ -1,3 +1,4 @@
+from config.settings import ADMIN_USER_ID, OWNER_USER_ID
 import asyncio
 import logging
 
@@ -14,7 +15,7 @@ router = Router()
 
 @router.message(Command('admin'))
 async def admin_panel(message: Message):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer('👑 Добро пожаловать, дорогой админ', reply_markup=markups.admin_panel)
     else:
         await message.answer('<b>❣️ Такая команда доступна только админу</b>')
@@ -22,7 +23,7 @@ async def admin_panel(message: Message):
 
 @router.message(Command('add_admin'))
 async def add_admin(message: Message):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID:
         data_admin = message.text.split()
         db.add_leader_user(int(data_admin[1]), data_admin[2])
         await message.answer('<b>Новый староста успешно добавлен!</b>')
@@ -30,14 +31,14 @@ async def add_admin(message: Message):
 
 @router.message(F.text == '🔝 В Админ панель')
 async def back_adm(message: Message, state: FSMContext):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer('👑 Добро пожаловать, дорогой админ', reply_markup=markups.admin_panel)
         await state.clear()
 
 
 @router.message(F.text == '👥 Пересылка')
 async def send_all(message: Message, state: FSMContext):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer('<b>Выбери кому будем делать пересылку</b>', reply_markup=markups.campus_spam)
         await state.set_state(states.Poll_all.campus_set)
     else:
@@ -46,7 +47,7 @@ async def send_all(message: Message, state: FSMContext):
 
 @router.message(F.text == '👥 Рассылка')
 async def send_all(message: Message, state: FSMContext):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer('<b>Выбери для кого будем делать рассылку</b>', reply_markup=markups.campus_spam)
         await state.set_state(states.Spam_all.campus_set)
     else:
@@ -191,7 +192,7 @@ async def spam_2(message: Message, state: FSMContext):
 
 @router.message(F.text == '📊 Статистика')
 async def statistics(message: Message):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         count_user = list(db.get_all_users())
         stats = ('📊 <b>АКТУАЛЬНАЯ СТАТИСТИКА</b>\n\n'
                  f'<code>ПОЛЬЗОВАТЕЛЕЙ В БОТЕ:</code> <b>{len(count_user)}</b>\n'
@@ -205,7 +206,7 @@ async def statistics(message: Message):
 
 @router.message(F.text == '👥 Получить usernames')
 async def enter_group(message: Message, state: FSMContext):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer('<b>Введи группу, для получения пользователей:</b>', reply_markup=markups.back_admin)
         await state.set_state(states.Get_Usernames.enter_group)
 
@@ -229,7 +230,7 @@ async def get_usernames(message: Message, state: FSMContext):
 
 @router.message(F.text == '🔎 Найти пользователя')
 async def set_find(message: Message, state: FSMContext):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer('<b>Выбери как будем искать</b>', reply_markup=markups.set_find_user)
         await state.set_state(states.Find_User.set_find)
 
@@ -285,7 +286,7 @@ async def find_user_username(message: Message, state: FSMContext):
 
 @router.message(F.text == '🔗 Сменить ссылку')
 async def set_url(message: Message, state: FSMContext):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE or message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID or message.from_user.id == OWNER_USER_ID:
         await message.answer(
             f'<b>Текущие ссылки:\n\n1 корпус –</b> <code>{db.get_url(1)}</code>\n<b>2 корпус –</b> <code>{db.get_url(2)}</code>\n\n<b>Введи в каком корпусе будем менять?</b>',
             reply_markup=markups.back_admin)
@@ -320,7 +321,7 @@ async def update_url2(message: Message, state: FSMContext):
 
 @router.message(F.text == '/admin_start_main_array_3752')
 async def yes_is_work(message: Message):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID:
         await message.answer('<b>Вы выполнили запуск, проверьте логи</b>')
         await start_array()
 
@@ -342,7 +343,7 @@ async def start_array() -> None:
 
 @router.message(F.text == '/send_pool')
 async def send_pool(message: Message):
-    if message.from_user.id == REMOVED_PRIVATE_VALUE:
+    if message.from_user.id == ADMIN_USER_ID:
         msg = await message.bot.send_poll(
             chat_id=message.chat.id,
             question="👨‍💻 Хочешь пользоваться ботом?\n\n"

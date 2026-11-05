@@ -1,3 +1,4 @@
+from config.settings import YOOMONEY_RECEIVER
 import asyncio
 import datetime
 import logging
@@ -208,7 +209,7 @@ async def check_summ_top_up(message: Message, state: FSMContext):
         try:
             label = f"{summ_pay}/{message.from_user.id}/{datetime.datetime.now()}"
             pay_form = Quickpay(
-                receiver="REMOVED_PRIVATE_VALUE",
+                receiver=YOOMONEY_RECEIVER,
                 quickpay_form="shop",
                 targets="Sponsor this project",
                 paymentType="SB",

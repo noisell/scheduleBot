@@ -1,3 +1,4 @@
+from config.settings import ADMIN_USER_ID
 import datetime
 import logging
 
@@ -244,9 +245,9 @@ async def homework(callback: CallbackQuery):
 @router.callback_query(lambda call: call.data.startswith('send-admin_'))
 async def send_message_admin(callback: CallbackQuery):
     button_text = callback.data.split('_')
-    await bot.send_message(chat_id=REMOVED_PRIVATE_VALUE,
+    await bot.send_message(chat_id=ADMIN_USER_ID,
                            text=f'Сообщение от <a href="tg://user?id={callback.from_user.id}">{callback.from_user.first_name}</a>:')
-    await bot.copy_message(chat_id=REMOVED_PRIVATE_VALUE,
+    await bot.copy_message(chat_id=ADMIN_USER_ID,
                            from_chat_id=callback.message.chat.id,
                            message_id=int(button_text[1]))
     await bot.edit_message_text(chat_id=callback.message.chat.id,
